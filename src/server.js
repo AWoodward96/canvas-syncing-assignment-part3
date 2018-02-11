@@ -20,7 +20,7 @@ const app = http.createServer(handler);
 
 const io = socketio(app);
 
-const square = {
+const latest = {
 
   lastUpdate: new Date().getTime(),
   x: 0, // x position of our square
@@ -38,10 +38,10 @@ io.on('connection', (socket) => {
   s.join('room1');
 
   socket.on('draw', (data) => {
-    if (data.time > square.lastUpdate) {
-      square.lastUpdate = data.time;
-      square.x = data.x;
-      square.y = data.y;
+    if (data.time > latest.lastUpdate) {
+      latest.lastUpdate = data.time;
+      latest.x = data.x;
+      latest.y = data.y;
       io.sockets.in('room1').emit('updateDraws', data);
     }
   });
